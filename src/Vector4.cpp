@@ -1,34 +1,38 @@
-#include "Vector4D.h"
+#include "Vector4.h"
 #include <sstream>
 #include "Math.h"
 
-namespace zSpace_Math
+namespace zMath
 {
-	Vector4D const Vector4D::zero = Vector4D(0, 0, 0, 0);
-	Vector4D const Vector4D::one = Vector4D(1, 1, 1, 1);
+	Vector4 const Vector4::zero = Vector4(0, 0, 0, 0);
+	Vector4 const Vector4::one = Vector4(1, 1, 1, 1);
 
-	Vector4D::Vector4D() : Vector4D(0, 0, 0, 0)
+	Vector4::Vector4() : Vector4(0, 0, 0, 0)
 	{
 	}
-	Vector4D::Vector4D(float x, float y, float z, float w) : x{x}, y{y}, z{z}, w{w}
+	Vector4::Vector4(float x, float y, float z, float w) : x{x}, y{y}, z{z}, w{w}
 	{
 	}
 
-	float Vector4D::Length()
+	Vector4::Vector4(int x, int y, int z, int w) : x{ (float)x }, y{ (float)y }, z{ (float)z }, w{ (float)w }
+	{
+	}
+
+	float Vector4::Length()
 	{
 		return this->x * this->x + this->y * this->y + this->z * this->z + this->w * this->w;
 	}
-	float Vector4D::LengthSq()
+	float Vector4::LengthSq()
 	{
 		return Math::sqrt(Length());
 	}
 
-	float Vector4D::Dot(const Vector4D& v)
+	float Vector4::Dot(const Vector4& v)
 	{
 		return this->x * v.x + this->y * v.y + this->z * v.z + this->w + v.w;
 	}
 
-	void Vector4D::Normalize()
+	void Vector4::Normalize()
 	{
 		float l = LengthSq();
 		this->x /= l;
@@ -37,15 +41,15 @@ namespace zSpace_Math
 		this->w /= l;
 	}
 
-	float Vector4D::Distance(const Vector4D& a, const Vector4D& b)
+	float Vector4::Distance(const Vector4& a, const Vector4& b)
 	{
-		Vector4D dir = b - a;
+		Vector4 dir = b - a;
 		return dir.LengthSq();
 	}
 
-	Vector4D& Vector4D::MoveTo(const Vector4D& current, const Vector4D& target, float speed)
+	Vector4 Vector4::MoveTo(const Vector4& current, const Vector4& target, float speed)
 	{
-		Vector4D dir = target - current;
+		Vector4 dir = target - current;
 		dir.Normalize();
 
 		dir *= speed;
@@ -53,14 +57,14 @@ namespace zSpace_Math
 		return dir;
 	}
 
-	Vector4D& Vector4D::Lerp(const Vector4D& a, const Vector4D& b, float lerp)
+	Vector4 Vector4::Lerp(const Vector4& a, const Vector4& b, float lerp)
 	{
 		lerp = Math::Clamp01(lerp);
-		Vector4D l = Vector4D(a.x + (b.x - a.x) * lerp, a.y + (b.y - a.y) * lerp, a.z + (b.z - a.z) * lerp, a.w + (b.w - a.w) * lerp);
+		Vector4 l = Vector4(a.x + (b.x - a.x) * lerp, a.y + (b.y - a.y) * lerp, a.z + (b.z - a.z) * lerp, a.w + (b.w - a.w) * lerp);
 		return l;
 	}
 
-	Vector4D& Vector4D::operator+=(const Vector4D& v)
+	Vector4& Vector4::operator+=(const Vector4& v)
 	{
 		this->x += v.x;
 		this->y += v.y;
@@ -69,7 +73,7 @@ namespace zSpace_Math
 
 		return *this;
 	}
-	Vector4D& Vector4D::operator-=(const Vector4D& v)
+	Vector4& Vector4::operator-=(const Vector4& v)
 	{
 		this->x -= v.x;
 		this->y -= v.y;
@@ -78,7 +82,7 @@ namespace zSpace_Math
 
 		return *this;
 	}
-	Vector4D& Vector4D::operator*=(const Vector4D& v)
+	Vector4& Vector4::operator*=(const Vector4& v)
 	{
 		this->x *= v.x;
 		this->y *= v.y;
@@ -87,7 +91,7 @@ namespace zSpace_Math
 
 		return *this;
 	}
-	Vector4D& Vector4D::operator/=(const Vector4D& v)
+	Vector4& Vector4::operator/=(const Vector4& v)
 	{
 		this->x /= v.x;
 		this->y /= v.y;
@@ -97,7 +101,7 @@ namespace zSpace_Math
 		return *this;
 	}
 
-	Vector4D& Vector4D::operator*=(float s)
+	Vector4& Vector4::operator*=(float s)
 	{
 		this->x *= s;
 		this->y *= s;
@@ -106,7 +110,7 @@ namespace zSpace_Math
 
 		return *this;
 	}
-	Vector4D& Vector4D::operator/=(float d)
+	Vector4& Vector4::operator/=(float d)
 	{
 		this->x /= d;
 		this->y /= d;
@@ -116,7 +120,7 @@ namespace zSpace_Math
 		return *this;
 	}
 
-	std::string Vector4D::ToString()
+	std::string Vector4::ToString()
 	{
 		std::stringstream ss;
 

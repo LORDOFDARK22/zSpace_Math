@@ -1,6 +1,6 @@
 #pragma once
 
-namespace zSpace_Math
+namespace zMath
 {
 	struct Math
 	{
@@ -24,5 +24,7 @@ namespace zSpace_Math
 
 		static float degrees(float value);
 		static float radians(float value);
+
+		static float Lerp(float x, float y, float dt);
 	};
 }

@@ -2,7 +2,7 @@
 #include <cmath>
 #include <math.h>
 
-namespace zSpace_Math
+namespace zMath
 {
 	const double Math::PI = 3.14159265358979323846;
 	const float Math::Deg2Rad = Math::PI / 180.0f;
@@ -140,5 +140,9 @@ namespace zSpace_Math
 	float Math::radians(float value)
 	{
 		return value * 0.0174532925f;
+	}
+	float Math::Lerp(float x, float y, float dt)
+	{
+		return (1 - dt) * x + dt * y;
 	}
 }
