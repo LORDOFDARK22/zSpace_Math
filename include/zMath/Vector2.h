@@ -1,6 +1,7 @@
 #pragma once
 #include <ostream>
 #include <string>
+#include <format>
 
 namespace zMath
 {
@@ -56,46 +57,39 @@ namespace zMath
 		return os << "{ x: " << v.x << ", y: " << v.y << " }";
 	}
 	
-	static inline Vector2& operator+(const Vector2& a, const Vector2& b)
-	{
-		Vector2 v{ a.x + b.x, a.y + b.y };
-		return v;
-	}
-	static inline Vector2& operator-(const Vector2& a, const Vector2& b)
-	{
-		Vector2 v{ a.x - b.x, a.y - b.y };
-		return v;
-	}
-	static inline Vector2& operator-(const Vector2& v)
-	{
-		Vector2 s{ 0.0f - v.x, 0.0f - v.y };
-		return s;
-	}
-	static inline Vector2& operator*(const Vector2& a, const Vector2& b)
-	{
-		Vector2 v{ a.x * b.x, a.y * b.y };
-		return v;
-	}
-	static inline Vector2& operator/(const Vector2& a, const Vector2& b)
-	{
-		Vector2 v{ a.x / b.x, a.y / b.y };
-		return v;
-	}
 
-	static inline Vector2& operator*(const Vector2& v, float a)
+	// ✅ رجع بالقيمة وليس بالـ reference
+	static inline Vector2 operator+(const Vector2& a, const Vector2& b)
 	{
-		Vector2 s{ v.x * a, v.y * a };
-		return s;
+		return Vector2{ a.x + b.x, a.y + b.y };
 	}
-	static inline Vector2& operator*(float a, const Vector2& v)
+	static inline Vector2 operator-(const Vector2& a, const Vector2& b)
 	{
-		Vector2 s{ v.x * a, v.y * a };
-		return s;
+		return Vector2{ a.x - b.x, a.y - b.y };
 	}
-	static inline Vector2& operator/(const Vector2& v, float a)
+	static inline Vector2 operator-(const Vector2& v)
 	{
-		Vector2 d{ v.x / a, v.y / a };
-		return d;
+		return Vector2{ -v.x, -v.y };
+	}
+	static inline Vector2 operator*(const Vector2& a, const Vector2& b)
+	{
+		return Vector2{ a.x * b.x, a.y * b.y };
+	}
+	static inline Vector2 operator/(const Vector2& a, const Vector2& b)
+	{
+		return Vector2{ a.x / b.x, a.y / b.y };
+	}
+	static inline Vector2 operator*(const Vector2& v, float a)
+	{
+		return Vector2{ v.x * a, v.y * a };
+	}
+	static inline Vector2 operator*(float a, const Vector2& v)
+	{
+		return Vector2{ v.x * a, v.y * a };
+	}
+	static inline Vector2 operator/(const Vector2& v, float a)
+	{
+		return Vector2{ v.x / a, v.y / a };
 	}
 
 	static inline bool operator==(const Vector2& a, const Vector2& b)
@@ -107,7 +101,7 @@ namespace zMath
 		return !(a == b);
 	}
 
-	static inline bool operator>(const Vector2 & a, const Vector2 & b)
+	static inline bool operator>(const Vector2& a, const Vector2& b)
 	{
 		return (a.x > b.x && a.y > b.y);
 	}
@@ -123,4 +117,27 @@ namespace zMath
 	{
 		return (a.x <= b.x && a.y <= b.y);
 	}
+}
+
+template<>
+struct std::formatter<zMath::Vector2> : std::formatter<std::string>
+{
+	auto format(const zMath::Vector2& v, std::format_context& ctx) const
+	{
+		return std::formatter<std::string>::format(std::format("( x{}, y{} )", v.x, v.y), ctx);
+	}
+};
+
+namespace std
+{
+	template<>
+	struct hash<zMath::Vector2>
+	{
+		size_t operator()(const zMath::Vector2& v) const noexcept
+		{
+			size_t hx = std::hash<float>{}(v.x);
+			size_t hy = std::hash<float>{}(v.y);
+			return hx ^ (hy << 1);
+		}
+	};
 }

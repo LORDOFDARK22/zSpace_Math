@@ -28,7 +28,7 @@ namespace zMath
 	float Vector2::LengthSq()
 	{
 		//√(x^2 + y^2)
-		return Math::sqrt(Length());
+		return Math::Sqrt(Length());
 	}
 	float Vector2::Dot(const Vector2& v)
 	{

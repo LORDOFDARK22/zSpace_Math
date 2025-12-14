@@ -24,7 +24,7 @@ namespace zMath
 	}
 	float Vector4::LengthSq()
 	{
-		return Math::sqrt(Length());
+		return Math::Sqrt(Length());
 	}
 
 	float Vector4::Dot(const Vector4& v)

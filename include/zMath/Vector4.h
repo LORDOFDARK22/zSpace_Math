@@ -1,6 +1,7 @@
 #pragma once
 #include <ostream>
 #include <string>
+#include <format>
 
 namespace zMath
 {
@@ -49,46 +50,38 @@ namespace zMath
 		return os << "{ x: " << v.x << ", y: " << v.y << ", z: " << v.z << ", w: " << v.w << " }";
 	}
 
-	static inline Vector4& operator+(const Vector4& a, const Vector4& b)
+	static inline Vector4 operator+(const Vector4& a, const Vector4& b)
 	{
-		Vector4 v{ a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
-		return v;
+		return Vector4{ a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
 	}
-	static inline Vector4& operator-(const Vector4& a, const Vector4& b)
+	static inline Vector4 operator-(const Vector4& a, const Vector4& b)
 	{
-		Vector4 v{ a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
-		return v;
+		return Vector4{ a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
 	}
-	static inline Vector4& operator-(const Vector4& v)
+	static inline Vector4 operator-(const Vector4& v)
 	{
-		Vector4 s{ 0.0f - v.x, 0.0f - v.y, 0.0f - v.z, 0.0f + v.w };
-		return s;
+		return Vector4{ 0.0f - v.x, 0.0f - v.y, 0.0f - v.z, 0.0f + v.w };
 	}
-	static inline Vector4& operator*(const Vector4& a, const Vector4& b)
+	static inline Vector4 operator*(const Vector4& a, const Vector4& b)
 	{
-		Vector4 v{ a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
-		return v;
+		return Vector4{ a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
 	}
-	static inline Vector4& operator/(const Vector4& a, const Vector4& b)
+	static inline Vector4 operator/(const Vector4& a, const Vector4& b)
 	{
-		Vector4 v{ a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
-		return v;
+		return Vector4{ a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
 	}
 
-	static inline Vector4& operator*(const Vector4& v, float a)
+	static inline Vector4 operator*(const Vector4& v, float a)
 	{
-		Vector4 s{ v.x * a, v.y * a, v.z * a, v.w * a };
-		return s;
+		return Vector4{ v.x * a, v.y * a, v.z * a, v.w * a };
 	}
-	static inline Vector4& operator*(float a, const Vector4& v)
+	static inline Vector4 operator*(float a, const Vector4& v)
 	{
-		Vector4 s{ v.x * a, v.y * a, v.z * a, v.w * a };
-		return s;
+		return Vector4{ v.x * a, v.y * a, v.z * a, v.w * a };
 	}
-	static inline Vector4& operator/(const Vector4& v, float a)
+	static inline Vector4 operator/(const Vector4& v, float a)
 	{
-		Vector4 d{ v.x / a, v.y / a, v.z / a, v.w / a };
-		return d;
+		return Vector4{ v.x / a, v.y / a, v.z / a, v.w / a };
 	}
 
 	static inline bool operator==(const Vector4& a, const Vector4& b)
@@ -117,3 +110,12 @@ namespace zMath
 		return (a.x <= b.x && a.y <= b.y && a.z <= b.z && a.w <= b.w);
 	}
 }
+
+template<>
+struct std::formatter<zMath::Vector4> : std::formatter<std::string>
+{
+	auto format(const zMath::Vector4& v, std::format_context& ctx) const
+	{
+		return std::formatter<std::string>::format(std::format("( x{}, y{}, z{}, w{} )", v.x, v.y, v.z, v.w), ctx);
+	}
+};

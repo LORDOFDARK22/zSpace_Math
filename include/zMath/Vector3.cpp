@@ -30,7 +30,7 @@ namespace zMath
 	}
 	float Vector3::LengthSq()
 	{
-		return Math::sqrt(Length());
+		return Math::Sqrt(Length());
 	}
 
 	float Vector3::Dot(const Vector3& v)
@@ -75,10 +75,10 @@ namespace zMath
 		return l;
 	}
 
-	Vector3 Vector3::Reflect(Vector3& inDirection, Vector3& inNormal)
+	Vector3 Vector3::Reflect(Vector3& isDirection, const Vector3& isNormal)
 	{
-		float num = -2.0f * inNormal.Dot(inDirection);
-		Vector3 reflect = Vector3{ num * inNormal.x + inDirection.x, num * inNormal.y + inDirection.y, num * inNormal.z + inDirection.z };
+		float dot = isDirection.Dot(isNormal);
+		Vector3 reflect = isDirection - 2.0f * dot * isNormal;
 		return reflect;
 	}
 
