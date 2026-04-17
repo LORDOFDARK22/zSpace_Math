@@ -29,7 +29,7 @@ namespace zMath
 		static float Lerp(float x, float y, float dt);
 
 		static Vector2 GetCenter(const std::vector<Vector2>& vertices);
-		static std::vector<Vector2> Normals(const std::vector<Vector2>& vertices);
+		static std::vector<Vector2> NormalEdges(const std::vector<Vector2>& vertices);
 		static std::vector<Vector2> GetVertices(const Vector2& position, const Vector2& scale, float rotation);
 	};
 }

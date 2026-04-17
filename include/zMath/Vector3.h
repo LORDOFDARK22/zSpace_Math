@@ -23,12 +23,22 @@ namespace zMath
 
 		void Normalize();
 
+		Vector3 Normalized();
+
 		//Distance && Movment
 		static float Distance(const Vector3& a, const Vector3& b);
 		static Vector3 MoveTo(const Vector3& current, const Vector3& target, float speed);
 		static Vector3 Lerp(const Vector3& a, const Vector3& b, float lerp);
 
 		static Vector3 Reflect(Vector3& isDirection, const Vector3& isNormal);
+
+		static Vector3 Cross(const Vector3& a, const Vector3& b);
+
+		static float Dot(const Vector3& a, const Vector3& b);
+
+		static float Angle(Vector3& a, Vector3& b);
+
+		static zMath::Vector3 Rotate(const Vector3& v, float angle, Vector3& axis);
 
 		//operators + - * /
 		Vector3& operator+=(const Vector3& v);

@@ -6,9 +6,12 @@
 
 namespace zMath
 {
+	/// <summary>
+	/// --------------------------Column-Major لـ OpenGL
+	/// </summary>
 	struct Matrix4x4
 	{
-		float m[4][4]{};
+		float m[4][4]{0};
 
 		// الوصول إلى الصفوف
 		struct Row
@@ -34,18 +37,15 @@ namespace zMath
 			float m21, float m22, float m23, float m24,
 			float m31, float m32, float m33, float m34,
 			float m41, float m42, float m43, float m44);
-		Matrix4x4(int m11, int m12, int m13, int m14,
-			int m21, int m22, int m23, int m24,
-			int m31, int m32, int m33, int m34,
-			int m41, int m42, int m43, int m44);
 		~Matrix4x4() = default;
 
 		Vector3 MultiplyVector(const Vector3& v) const;
+		Vector3 MultiplyPoint(const Vector3& v) const;
 		Matrix4x4 MultiplyMat4x4(const Matrix4x4& other) const;
 
 		static Matrix4x4 Translate(const Vector3& v);
 		static Matrix4x4 Scale(const Vector3& v);
-		static Matrix4x4 Rotate(const Matrix4x4& m, int angle, const Vector3& v);
+		static Matrix4x4 Rotate(const Matrix4x4& m, float angle, const Vector3& v);
 
 		static Matrix4x4 Ortho(float left, float right, float bottom, float top, float zNear, float zFar);
 		static Matrix4x4 Perspective(float fov, float aspect, float zNear, float zFar);
@@ -53,6 +53,8 @@ namespace zMath
 		static Matrix4x4 RotationX(float angle);
 		static Matrix4x4 RotationY(float angle);
 		static Matrix4x4 RotationZ(float angle);
+
+		static Matrix4x4 LookAt(const Vector3& eye, const Vector3& center, const Vector3& up);
 
 		static const Matrix4x4 identity;
 		static const Matrix4x4 zero;
@@ -67,32 +69,42 @@ namespace zMath
 		}
 	};
 
-	// Matrix * Matrix
+	// Matrix * Matrix (Column-Major)
 	inline Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2)
 	{
 		Matrix4x4 result{};
-		for (int i = 0; i < 4; ++i)
+
+		// Column-Major: m[col][row]
+		for (int col = 0; col < 4; ++col)      // عمود النتيجة
 		{
-			for (int j = 0; j < 4; ++j)
+			for (int row = 0; row < 4; ++row)  // صف النتيجة
 			{
-				result.m[i][j] =
-					m1.m[i][0] * m2.m[0][j] +
-					m1.m[i][1] * m2.m[1][j] +
-					m1.m[i][2] * m2.m[2][j] +
-					m1.m[i][3] * m2.m[3][j];
+				result.m[col][row] =
+					m1.m[col][0] * m2.m[0][row] +
+					m1.m[col][1] * m2.m[1][row] +
+					m1.m[col][2] * m2.m[2][row] +
+					m1.m[col][3] * m2.m[3][row];
 			}
 		}
 		return result;
 	}
 
-	// Matrix * Vector4
+	// Matrix * Vector4 (Column-Major)
 	inline Vector4 operator*(const Matrix4x4& m, const Vector4& v)
 	{
+		// Column-Major: m[col][row]
 		return {
-			m.m[0][0] * v.x + m.m[0][1] * v.y + m.m[0][2] * v.z + m.m[0][3] * v.w,
-			m.m[1][0] * v.x + m.m[1][1] * v.y + m.m[1][2] * v.z + m.m[1][3] * v.w,
-			m.m[2][0] * v.x + m.m[2][1] * v.y + m.m[2][2] * v.z + m.m[2][3] * v.w,
-			m.m[3][0] * v.x + m.m[3][1] * v.y + m.m[3][2] * v.z + m.m[3][3] * v.w
+			// الصف 0 = m[0][0]*v.x + m[1][0]*v.y + m[2][0]*v.z + m[3][0]*v.w
+			m.m[0][0] * v.x + m.m[1][0] * v.y + m.m[2][0] * v.z + m.m[3][0] * v.w,
+
+			// الصف 1 = m[0][1]*v.x + m[1][1]*v.y + m[2][1]*v.z + m[3][1]*v.w
+			m.m[0][1] * v.x + m.m[1][1] * v.y + m.m[2][1] * v.z + m.m[3][1] * v.w,
+
+			// الصف 2 = m[0][2]*v.x + m[1][2]*v.y + m[2][2]*v.z + m[3][2]*v.w
+			m.m[0][2] * v.x + m.m[1][2] * v.y + m.m[2][2] * v.z + m.m[3][2] * v.w,
+
+			// الصف 3 = m[0][3]*v.x + m[1][3]*v.y + m[2][3]*v.z + m[3][3]*v.w
+			m.m[0][3] * v.x + m.m[1][3] * v.y + m.m[2][3] * v.z + m.m[3][3] * v.w
 		};
 	}
 
