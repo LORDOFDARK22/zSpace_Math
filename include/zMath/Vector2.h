@@ -11,25 +11,31 @@ namespace zMath
 		float y;
 
 		Vector2();
+		Vector2(float value);
 		Vector2(float x, float y);
 		Vector2(int x, int y);
 		~Vector2() = default;
 
 		float Length();
-		float LengthSq();
+		float Length2();
 		float Dot(const Vector2& v);
 
 		Vector2 Min(const Vector2& a, const Vector2& b);
 		Vector2 Max(const Vector2& a, const Vector2& b);
 
-		float Angle(const Vector2& from, const Vector2& to);
+		Vector2 Revarse();
+
+		float Angle(Vector2& from, Vector2& to);
 
 		void Normalize();
+		Vector2 Normalized();
 
 		//Distance && Movment
 		static float Distance(const Vector2& a, const Vector2& b);
-		static Vector2& MoveTo(const Vector2& current, const Vector2& target, float speed);
-		static Vector2& Lerp(const Vector2& a, const Vector2& b, float lerp);
+		static Vector2 MoveTo(const Vector2& current, const Vector2& target, float speed);
+		static Vector2 Lerp(const Vector2& a, const Vector2& b, float lerp);
+
+		static float Dot(const Vector2& a, const Vector2& b);
 
 		//operators + - * /
 		Vector2& operator+=(const Vector2& v);
@@ -37,6 +43,8 @@ namespace zMath
 		Vector2& operator*=(const Vector2& v);
 		Vector2& operator/=(const Vector2& v);
 
+		Vector2& operator*=(int s);
+		Vector2& operator/=(int d);
 		Vector2& operator*=(float s);
 		Vector2& operator/=(float d);
 
@@ -44,12 +52,12 @@ namespace zMath
 		std::string ToString();
 
 		//topdown
-		static const Vector2 zero;
-		static const Vector2 one;
-		static const Vector2 up;
-		static const Vector2 down;
-		static const Vector2 left;
-		static const Vector2 right;
+		static const Vector2 Zero;
+		static const Vector2 One;
+		static const Vector2 Up;
+		static const Vector2 Down;
+		static const Vector2 Left;
+		static const Vector2 Right;
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, const Vector2& v)
@@ -58,7 +66,6 @@ namespace zMath
 	}
 	
 
-	// ✅ رجع بالقيمة وليس بالـ reference
 	static inline Vector2 operator+(const Vector2& a, const Vector2& b)
 	{
 		return Vector2{ a.x + b.x, a.y + b.y };
