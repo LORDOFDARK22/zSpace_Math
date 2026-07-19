@@ -3,6 +3,8 @@
 #include <string>
 #include <format>
 
+#include "Vector3.h"
+
 namespace zMath
 {
 	struct Vector4
@@ -13,15 +15,19 @@ namespace zMath
 		float w;
 
 		Vector4();
+		Vector4(const Vector3& v);
+		Vector4(float value);
 		Vector4(float x, float y, float z, float w);
 		Vector4(int x, int y, int z, int w);
 		~Vector4() = default;
 
 		float Length();
-		float LengthSq();
+		float Length2();
 		float Dot(const Vector4& v);
 
 		void Normalize();
+
+		Vector4 Normalized();
 
 		//Distance && Movment
 		static float Distance(const Vector4& a, const Vector4& b);
@@ -34,6 +40,8 @@ namespace zMath
 		Vector4& operator*=(const Vector4& v);
 		Vector4& operator/=(const Vector4& v);
 
+		Vector4& operator*=(int s);
+		Vector4& operator/=(int d);
 		Vector4& operator*=(float s);
 		Vector4& operator/=(float d);
 

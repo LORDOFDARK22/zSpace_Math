@@ -31,7 +31,7 @@ namespace zMath
 		ConstRow operator[](int row) const { return ConstRow{ m[row] }; }
 
 		// Constructors
-		Matrix4x4();
+		Matrix4x4(float mi);
 		Matrix4x4(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4);
 		Matrix4x4(float m11, float m12, float m13, float m14,
 			float m21, float m22, float m23, float m24,
@@ -43,11 +43,11 @@ namespace zMath
 		Vector3 MultiplyPoint(const Vector3& v) const;
 		Matrix4x4 MultiplyMat4x4(const Matrix4x4& other) const;
 
-		static Matrix4x4 Translate(const Vector3& v);
-		static Matrix4x4 Scale(const Vector3& v);
-		static Matrix4x4 Rotate(const Matrix4x4& m, float angle, const Vector3& v);
+		static Matrix4x4 Translate(const Matrix4x4& m, const Vector3& v);
+		static Matrix4x4 Scale(const Matrix4x4& m, const Vector3& v);
+		static Matrix4x4 Rotate(const Matrix4x4& m, float angle, Vector3& v);
 
-		static Matrix4x4 Ortho(float left, float right, float bottom, float top, float zNear, float zFar);
+		static Matrix4x4 Orthographic(float left, float right, float bottom, float top, float zNear, float zFar);
 		static Matrix4x4 Perspective(float fov, float aspect, float zNear, float zFar);
 
 		static Matrix4x4 RotationX(float angle);
@@ -56,8 +56,9 @@ namespace zMath
 
 		static Matrix4x4 LookAt(const Vector3& eye, const Vector3& center, const Vector3& up);
 
-		static const Matrix4x4 identity;
-		static const Matrix4x4 zero;
+		static Matrix4x4 Invarse(const Matrix4x4& m);
+
+		static const Matrix4x4 Identity;
 
 		std::string ToString() const;
 
@@ -72,7 +73,7 @@ namespace zMath
 	// Matrix * Matrix (Column-Major)
 	inline Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2)
 	{
-		Matrix4x4 result{};
+		Matrix4x4 result{0};
 
 		// Column-Major: m[col][row]
 		for (int col = 0; col < 4; ++col)      // عمود النتيجة

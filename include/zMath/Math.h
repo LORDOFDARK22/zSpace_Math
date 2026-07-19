@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "Vector2.h"
+#include "Vector3.h"
+#include "Matrix4x4.h"
 
 namespace zMath
 {
@@ -31,5 +33,13 @@ namespace zMath
 		static Vector2 GetCenter(const std::vector<Vector2>& vertices);
 		static std::vector<Vector2> NormalEdges(const std::vector<Vector2>& vertices);
 		static std::vector<Vector2> GetVertices(const Vector2& position, const Vector2& scale, float rotation);
+
+		//new
+		static float Abs(float value);
+
+		static float Asin(float value);
+		static float Atan2(float y, float x);
+
+		static bool DecomposeTransform(const Matrix4x4& transform, Vector3& outTranslation, Vector3& outRotation, Vector3& outScale);
 	};
 }
